@@ -8,9 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.example.alebeer.beer.data.local.entity.Beer
+import com.example.alebeer.beer.data.remote.dto.BeerDto
 import com.example.alebeer.beer.presentation.bearinfo.component.BeerBinder
 import com.example.alebeer.databinding.FragmentBeerBinding
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import mva2.adapter.ListSection
@@ -45,7 +46,7 @@ class BeerInfoFragment : Fragment() {
         adapter.registerItemBinders(BeerBinder())
 
         // Create Section and add items
-        val listSection = ListSection<Beer>()
+        val listSection = ListSection<BeerDto>()
 
         // Add Section to the adapter
         adapter.addSection(listSection)
@@ -57,8 +58,14 @@ class BeerInfoFragment : Fragment() {
                         ivLoading.visibility = View.VISIBLE
                     } else {
                         ivLoading.visibility = View.GONE
-                        listSection.addAll(uiState.listBeer)
                     }
+                }
+
+                listSection.set(uiState.listBeer)
+
+                if (uiState.userMessage != "") {
+                    Snackbar.make(binding.root, uiState.userMessage, Snackbar.LENGTH_SHORT).show()
+                    viewModel.snackbarShown()
                 }
             }
         }

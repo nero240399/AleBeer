@@ -7,7 +7,7 @@
 
         <variable
             name="beer"
-            type="com.example.alebeer.beer.data.local.entity.Beer" />
+            type="com.example.alebeer.beer.data.remote.dto.BeerDto" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,9 +17,10 @@
 
         <ImageView
             android:id="@+id/iv_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:imageResource="@{beer.imageRes}"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="fitXY"
+            app:imageUrl="@{beer.imageUrl}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="contentDescription"
@@ -27,11 +28,13 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:text="@{beer.name}"
             app:layout_constraintBottom_toTopOf="@id/tv_price"
+            app:layout_constraintEnd_toStartOf="@+id/btn_save"
             app:layout_constraintStart_toEndOf="@id/iv_image"
             app:layout_constraintTop_toTopOf="@id/iv_image"
             app:layout_constraintVertical_chainStyle="packed"
@@ -41,7 +44,7 @@
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{beer.name}"
+            android:text="@{beer.price}"
             app:layout_constraintBottom_toBottomOf="@+id/iv_image"
             app:layout_constraintStart_toStartOf="@id/tv_name"
             app:layout_constraintTop_toBottomOf="@id/tv_name"
@@ -60,6 +63,7 @@
             android:id="@+id/et_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="@string/note"
             android:importantForAutofill="no"
             android:inputType="text"

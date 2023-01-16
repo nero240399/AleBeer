@@ -5,6 +5,7 @@ plugins {
     id 'org.jmailen.kotlinter'
     id 'com.google.dagger.hilt.android'
     id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 android {
@@ -58,6 +59,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationJsonVersion"
     implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$serializationConverterVersion"
     implementation "io.coil-kt:coil:$coilVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
 
     // Room
     implementation "androidx.room:room-runtime:$roomVersion"

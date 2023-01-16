@@ -8,6 +8,14 @@ plugins {
     id 'com.google.devtools.ksp' version '1.7.21-1.0.8' apply false
 }
 
+subprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            freeCompilerArgs += '-opt-in=kotlinx.serialization.ExperimentalSerializationApi'
+        }
+    }
+}
+
 ext {
     // Sdk and tools
     minSdkVersion = 21
@@ -28,7 +36,8 @@ ext {
     retrofitVersion = '2.9.0'
     serializationJsonVersion = '1.4.1'
     serializationConverterVersion = '0.8.0'
-
+    okhttpVersion = '5.0.0-alpha.3'
     coilVersion = '2.2.2'
+
     roomVersion = '2.5.0'
 }
