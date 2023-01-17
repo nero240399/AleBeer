@@ -1,4 +1,4 @@
-package com.example.alebeer.beer.presentation.bearinfo
+package com.example.alebeer.beer.presentation.component
 
 import com.example.alebeer.beer.domain.model.Beer
 

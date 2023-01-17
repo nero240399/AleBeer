@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.InputType" />
+
+        <variable
+            name="beer"
+            type="com.example.alebeer.beer.domain.model.Beer" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="contentDescription"
+            tools:src="@drawable/ic_100tb" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="@{beer.name}"
+            app:layout_constraintBottom_toTopOf="@id/tv_price"
+            app:layout_constraintEnd_toStartOf="@+id/btn_delete"
+            app:layout_constraintStart_toEndOf="@id/iv_image"
+            app:layout_constraintTop_toTopOf="@id/iv_image"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Saigon" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{beer.price}"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_image"
+            app:layout_constraintStart_toStartOf="@id/tv_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            tools:text="3000$" />
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:text="@string/delete"
+            app:layout_constraintBottom_toBottomOf="@id/iv_image"
+            app:layout_constraintEnd_toStartOf="@id/btn_update"
+            app:layout_constraintTop_toTopOf="@id/iv_image" />
+
+        <Button
+            android:id="@+id/btn_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update"
+            app:layout_constraintBottom_toBottomOf="@id/iv_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_image" />
+
+        <EditText
+            android:id="@+id/et_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:hint="@string/note"
+            android:importantForAutofill="no"
+            android:inputType="@{beer.saved ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT}"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:text="@{beer.note}"
+            app:layout_constraintTop_toBottomOf="@id/iv_image" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

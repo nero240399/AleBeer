@@ -1,9 +1,11 @@
 package com.example.alebeer.beer.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.alebeer.beer.data.local.entity.BeerEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -15,4 +17,10 @@ interface BeerDao {
 
     @Query("SELECT * From beer")
     fun observeListBeer(): Flow<List<BeerEntity>>
+
+    @Update
+    suspend fun update(beerEntity: BeerEntity)
+
+    @Delete
+    suspend fun delete(beerEntity: BeerEntity)
 }

@@ -1,4 +1,4 @@
-package com.example.alebeer.beer.presentation.bearinfo.component
+package com.example.alebeer.beer.presentation.component
 
 import android.widget.ImageView
 import androidx.core.net.toUri

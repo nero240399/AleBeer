@@ -13,7 +13,7 @@ import com.example.alebeer.databinding.ItemBeerBinding
 import mva2.adapter.ItemBinder
 import mva2.adapter.ItemViewHolder
 
-class BeerBinder(private val onSaveButtonClick: (Beer, Bitmap, String) -> Unit) :
+class BeerBinder(private val onSaveButtonClick: (Beer, String, Bitmap) -> Unit) :
     ItemBinder<Beer, BeerBinder.BeerViewHolder>() {
 
     override fun createViewHolder(parent: ViewGroup): BeerViewHolder {
@@ -42,8 +42,8 @@ class BeerBinder(private val onSaveButtonClick: (Beer, Bitmap, String) -> Unit) 
 
             onSaveButtonClick(
                 item,
-                imageView.drawToBitmap(),
-                editText.text.toString()
+                editText.text.toString(),
+                imageView.drawToBitmap()
             )
         }
     }

@@ -12,6 +12,5 @@
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.alebeer.beer.presentation.favorite.FavoriteFragment"
-        android:label="@string/favorite"
-        tools:layout="@layout/fragment_favorite" />
+        android:label="@string/favorite" />
 </navigation>

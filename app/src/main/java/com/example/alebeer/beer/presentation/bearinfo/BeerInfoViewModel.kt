@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.alebeer.beer.data.mapper.toBeer
 import com.example.alebeer.beer.domain.model.Beer
 import com.example.alebeer.beer.domain.repository.BeerRepository
+import com.example.alebeer.beer.domain.repository.InternalImageRepository
+import com.example.alebeer.beer.presentation.component.BearInfoUiState
 import com.example.alebeer.util.Result
 import com.example.alebeer.util.WhileUiSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,33 +20,33 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BeerInfoViewModel @Inject constructor(
-    private val repository: BeerRepository
+    private val beerRepository: BeerRepository,
+    private val imageRepository: InternalImageRepository
 ) : ViewModel() {
 
-    private val _savedListBeer = repository.getBeerStream()
+    private val _savedListBeer = beerRepository.getBeerStream()
     private val _listBeer = MutableStateFlow(listOf<Beer>())
     private val _isLoading = MutableStateFlow(false)
     private val _userMessage = MutableStateFlow("")
 
-    private val _listUiBeer =
-        combine(_listBeer, _savedListBeer) { listBeerDto, listBeerEntity ->
-            val listBeer = listBeerDto.map { beerDto ->
-                listBeerEntity.forEach {
-                    if (beerDto.id == it.id) {
-                        return@map Beer(
-                            it.id,
-                            it.name,
-                            it.price,
-                            it.note,
-                            beerDto.imageUrl,
-                            isSaved = true
-                        )
-                    }
+    private val _listUiBeer = combine(_listBeer, _savedListBeer) { listBeerDto, listBeerEntity ->
+        val listBeer = listBeerDto.map { beerDto ->
+            listBeerEntity.forEach {
+                if (beerDto.id == it.id) {
+                    return@map Beer(
+                        it.id,
+                        it.name,
+                        it.price,
+                        it.note,
+                        beerDto.imageUrl,
+                        isSaved = true
+                    )
                 }
-                Beer(beerDto.id, beerDto.name, beerDto.price, "", beerDto.imageUrl)
             }
-            listBeer
+            Beer(beerDto.id, beerDto.name, beerDto.price, "", beerDto.imageUrl)
         }
+        listBeer
+    }
 
     val uiState: StateFlow<BearInfoUiState> = combine(
         _listUiBeer,
@@ -57,7 +59,7 @@ class BeerInfoViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _isLoading.value = true
-            when (val listBeer = repository.fetchBeerInfo()) {
+            when (val listBeer = beerRepository.fetchBeerInfo()) {
                 is Result.Success -> _listBeer.update { listBeer.data.map { it.toBeer() } }
                 is Result.Error -> showSnackbar(listBeer)
             }
@@ -68,9 +70,9 @@ class BeerInfoViewModel @Inject constructor(
     fun onEvent(event: BeerInfoEvent) {
         when (event) {
             is BeerInfoEvent.OnSaveButton -> viewModelScope.launch {
-                repository.saveBeerInfo(event.beer, event.bitmap, event.note)
+                beerRepository.saveBeerInfo(event.beer, event.note)
+                launch { imageRepository.saveImage(event.beer.name, event.bitmap) }
             }
-            else -> Unit
         }
     }
 

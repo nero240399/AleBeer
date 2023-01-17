@@ -6,7 +6,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".beer.presentation.bear_info.BeerInfoFragment">
+        tools:context=".beer.presentation.bearinfo.BeerInfoFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/beer_list"
