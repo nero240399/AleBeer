@@ -5,9 +5,13 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="android.text.InputType" />
+
         <variable
             name="beer"
-            type="com.example.alebeer.beer.data.remote.dto.BeerDto" />
+            type="com.example.alebeer.beer.domain.model.Beer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,6 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/save"
+            android:visibility="@{beer.saved ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/iv_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_image" />
@@ -63,11 +68,13 @@
             android:id="@+id/et_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:hint="@string/note"
             android:importantForAutofill="no"
-            android:inputType="text"
+            android:inputType="@{beer.saved ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT}"
             android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:text="@{beer.note}"
             app:layout_constraintTop_toBottomOf="@id/iv_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

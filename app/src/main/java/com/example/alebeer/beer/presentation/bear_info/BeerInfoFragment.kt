@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.example.alebeer.beer.data.remote.dto.BeerDto
+import com.example.alebeer.beer.domain.model.Beer
 import com.example.alebeer.beer.presentation.bearinfo.component.BeerBinder
 import com.example.alebeer.databinding.FragmentBeerBinding
 import com.google.android.material.snackbar.Snackbar
@@ -43,10 +43,14 @@ class BeerInfoFragment : Fragment() {
         binding.beerList.adapter = adapter
 
         // Register Binder
-        adapter.registerItemBinders(BeerBinder())
+        adapter.registerItemBinders(
+            BeerBinder { beer, bitmap, note ->
+                viewModel.onEvent(BeerInfoEvent.OnSaveButton(beer, bitmap, note))
+            }
+        )
 
         // Create Section and add items
-        val listSection = ListSection<BeerDto>()
+        val listSection = ListSection<Beer>()
 
         // Add Section to the adapter
         adapter.addSection(listSection)

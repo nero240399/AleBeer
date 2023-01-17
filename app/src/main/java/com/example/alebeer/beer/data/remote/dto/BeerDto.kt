@@ -10,6 +10,7 @@ data class BeerResponse(
 
 @Serializable
 data class BeerDto(
+    val id: Int,
     val price: String,
     val name: String,
     @SerialName("image") val imageUrl: String
