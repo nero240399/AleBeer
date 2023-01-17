@@ -26,7 +26,7 @@ class FavoriteViewModel @Inject constructor(
 
     val uiState: StateFlow<BearInfoUiState> = combine(
         _savedListBeer,
-        _isLoading,
+        _isLoading
     ) { listBeerEntity, isLoading ->
         val listImage = imageRepository.loadImages()
         val listBeer = listBeerEntity.map { it.toBeer(listImage) }
