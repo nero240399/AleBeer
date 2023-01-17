@@ -29,31 +29,21 @@ class BeerInfoViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     private val _userMessage = MutableStateFlow("")
 
-    private val _listUiBeer = combine(_listBeer, _savedListBeer) { listBeerDto, listBeerEntity ->
-        val listBeer = listBeerDto.map { beerDto ->
-            listBeerEntity.forEach {
-                if (beerDto.id == it.id) {
-                    return@map Beer(
-                        it.id,
-                        it.name,
-                        it.price,
-                        it.note,
-                        beerDto.imageUrl,
-                        isSaved = true
-                    )
-                }
-            }
-            Beer(beerDto.id, beerDto.name, beerDto.price, "", beerDto.imageUrl)
-        }
-        listBeer
-    }
-
     val uiState: StateFlow<BearInfoUiState> = combine(
-        _listUiBeer,
+        _listBeer,
+        _savedListBeer,
         _isLoading,
         _userMessage
-    ) { listBeer, isLoading, message ->
-        BearInfoUiState(listBeer, isLoading, message)
+    ) { listBeer, listBeerEntity, isLoading, message ->
+        val listUiBeer = listBeer.map { beer ->
+            listBeerEntity.forEach {
+                if (beer.id == it.id) {
+                    return@map it.toBeer(beer.imageUrl)
+                }
+            }
+            beer
+        }
+        BearInfoUiState(listUiBeer, isLoading, message)
     }.stateIn(viewModelScope, WhileUiSubscribed, BearInfoUiState())
 
     init {
@@ -70,6 +60,9 @@ class BeerInfoViewModel @Inject constructor(
     fun onEvent(event: BeerInfoEvent) {
         when (event) {
             is BeerInfoEvent.OnSaveButton -> viewModelScope.launch {
+                val list = _listBeer.value.toMutableList()
+                list[event.position] = list[event.position].copy(isSaving = true)
+                _listBeer.value = list
                 beerRepository.saveBeerInfo(event.beer, event.note)
                 launch { imageRepository.saveImage(event.beer.name, event.bitmap) }
             }

@@ -8,7 +8,7 @@ data class Beer(
     val price: String,
     val note: String = "",
     val imageUrl: String = "",
-    var isLoading: Boolean = false,
     val isSaved: Boolean = false,
-    val bitmap: Bitmap? = null
+    val bitmap: Bitmap? = null,
+    var isSaving: Boolean = false
 )

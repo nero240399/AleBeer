@@ -33,3 +33,12 @@ fun BeerEntity.toBeer(listImage: List<InternalStoragePhoto>) = Beer(
     note = this.note,
     bitmap = listImage.find { it.name == "$name.png" }?.bmp
 )
+
+fun BeerEntity.toBeer(imageUrl: String): Beer = Beer(
+    id = this.id,
+    name = this.name,
+    price = this.price,
+    note = this.note,
+    imageUrl = imageUrl,
+    isSaved = true
+)

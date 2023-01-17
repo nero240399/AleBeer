@@ -44,8 +44,8 @@ class BeerInfoFragment : Fragment() {
 
         // Register Binder
         adapter.registerItemBinders(
-            BeerBinder { beer, note, bitmap ->
-                viewModel.onEvent(BeerInfoEvent.OnSaveButton(beer, note, bitmap))
+            BeerBinder { beer, note, bitmap, position ->
+                viewModel.onEvent(BeerInfoEvent.OnSaveButton(beer, note, bitmap, position))
             }
         )
 
