@@ -10,6 +10,7 @@ import com.example.alebeer.beer.presentation.component.BearInfoUiState
 import com.example.alebeer.util.Result
 import com.example.alebeer.util.WhileUiSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -61,7 +62,9 @@ class BeerInfoViewModel @Inject constructor(
         when (event) {
             is BeerInfoEvent.OnSaveButton -> viewModelScope.launch {
                 val list = _listBeer.value.toMutableList()
-                _listBeer.update { list.also { it[event.position].isSaving = true } }
+                list[event.position] = list[event.position].copy(isSaving = true)
+                _listBeer.update { list }
+                delay(500)
                 beerRepository.saveBeerInfo(event.beer, event.note)
                 _listBeer.update { list.also { it[event.position].isSaving = false } }
                 launch { imageRepository.saveImage(event.beer.name, event.bitmap) }
