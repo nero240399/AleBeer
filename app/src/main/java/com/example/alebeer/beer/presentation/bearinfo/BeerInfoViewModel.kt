@@ -61,9 +61,9 @@ class BeerInfoViewModel @Inject constructor(
         when (event) {
             is BeerInfoEvent.OnSaveButton -> viewModelScope.launch {
                 val list = _listBeer.value.toMutableList()
-                list[event.position] = list[event.position].copy(isSaving = true)
-                _listBeer.value = list
+                _listBeer.update { list.also { it[event.position].isSaving = true } }
                 beerRepository.saveBeerInfo(event.beer, event.note)
+                _listBeer.update { list.also { it[event.position].isSaving = false } }
                 launch { imageRepository.saveImage(event.beer.name, event.bitmap) }
             }
         }
